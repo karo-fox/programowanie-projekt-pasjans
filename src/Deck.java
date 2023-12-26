@@ -5,6 +5,7 @@ public class Deck {
     private RandomEnumGenerator<CardValue> valueGenerator;
     private RandomEnumGenerator<Suit> suitGenerator;
 
+
     public Deck() {
         this.valueGenerator = new RandomEnumGenerator<>(CardValue.class);
         this.suitGenerator = new RandomEnumGenerator<>(Suit.class);
@@ -21,6 +22,10 @@ public class Deck {
         }
     }
 
+    public void sort() {
+        this.content.sort((Card c1, Card c2) -> c1.compareTo(c2));
+    }
+
     public Card draw() throws Exception {
         if (this.isEmpty()) {
             throw new Exception("Cannot draw from the empty deck.");
@@ -30,5 +35,9 @@ public class Deck {
 
     public boolean isEmpty() {
         return this.content.size() == 0;
+    }
+
+    public String toString() {
+        return this.content.toString();
     }
 }

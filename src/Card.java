@@ -13,6 +13,18 @@ public class Card implements Comparable<Card> {
         this.isUp = !this.isUp;
     }
 
+    public int suitIdx() {
+        return this.suit.getValue();
+    }
+
+    public int valueIdx() {
+        return this.value.getValue();
+    }
+
+    public boolean getFaceUp() {
+        return this.isUp;
+    }
+
     public String toString() {
         if (this.isUp) {
             return this.valueString() + this.suitString();

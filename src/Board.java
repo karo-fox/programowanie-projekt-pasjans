@@ -24,6 +24,21 @@ public class Board {
         this.hand.flip();
     }
 
+    public void replace() {
+        Card newHand = this.content.get(this.hand.suitIdx()).remove(this.hand.valueIdx());
+        this.content.get(this.hand.suitIdx()).add(this.hand.valueIdx(), this.hand);
+        this.hand = newHand;
+        this.hand.flip();
+    }
+
+    public Card getHand() {
+        return this.hand;
+    }
+
+    public boolean isFaceUp() {
+        return this.content.stream().allMatch(row -> row.stream().allMatch(c -> c.getFaceUp()));
+    }
+
     public String toString() {
         String string = "";
         for (int i = 0; i < 6; i++) {
