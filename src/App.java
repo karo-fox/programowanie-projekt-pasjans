@@ -1,9 +1,13 @@
 public class App {
     public static void main(String[] args) throws Exception {
+        int counter = 0;
         Game game = new Game();
-        game.run();
-        if (game.getResult()) {
-            System.out.println(game.toString());
+        while (!game.getResult()) {
+            counter++;
+            game = new Game();
+            game.run();
         }
+        System.out.println("liczba partii: " + counter);
+        System.out.println(game.toString());
     }
 }
