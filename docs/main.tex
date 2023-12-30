@@ -1,0 +1,510 @@
+\documentclass{article}
+
+\usepackage{pgf-umlcd}
+\usepackage{wrapfig}
+
+\usepackage[utf8]{inputenc}
+\DeclareUnicodeCharacter{2660}{$\spadesuit$}
+\DeclareUnicodeCharacter{2665}{$\heartsuit$}
+\DeclareUnicodeCharacter{2666}{$\diamondsuit$}
+\DeclareUnicodeCharacter{2663}{$\clubsuit$}
+
+\usepackage[polish]{babel}
+\usepackage[OT4]{fontenc}
+
+\usepackage{multicol}
+
+\tikzstyle{umlcd style enum}=[rectangle split, rectangle split parts=2, 
+every text node part/.style={text centered},
+draw, minimum height=2em, umlcolor, minimum width=2cm, text width=4cm,
+minimum height=1cm, node distance=2cm]
+\newenvironment{enum}[3][]%
+{
+\begin{classAndInterfaceCommon}{#1}{#2}{#3}
+}%
+{\node[umlcd style enum, anchor=north] (\umlcdClassName) at (\umlcdClassPos)
+    {$<<$enumeration$>>$ \\ \textbf{\umlcdClassName}
+\nodepart{second}
+\umlcdClassAttributes
+};
+\end{classAndInterfaceCommon}
+}
+
+\title{Sprawozdanie z projektu Programowanie III}
+\author{Karolina Kozubik}
+\date{Styczeń 2024}
+
+\begin{document}
+
+\maketitle
+\section{Temat projektu}
+
+Tematem projektu jest zrealizowanie wybranego zadania konkursowego w języku Java. Zadanie pochodzi z konkursu Algorytmion, edycja 2016.
+Treść zadania:
+
+
+Pasjans jest grą karcianą (najczęściej jednoosobową), której celem jest ułożenie krat wg
+pewnego wzorca. W zdecydowanej większości pasjansów powodzenie gracza zależy od jego
+umiejętności, istnieje jednak i taki, który zależy tylko od „szczęścia” gracza.
+W pasjansie tym, po przetasowaniu talii 24 krat, układamy (koszulkami do góry) cztery
+rzędy krat po sześć – z wyjątkiem rzędu czwartego, w którym ostatnią kartę zatrzymujemy w
+dłoni. Celem gry jest ułożenie kart we właściwej kolejności: w pierwszym rzędzie kiery (9,
+10, walet, dama, król i as), w kolejnych odpowiednie kolory to: karo, trefl i pik (kolejność
+figur jak w kierach).
+Gra kończy się, gdy w dłoni mieć będziemy asa pik. Jeśli kartą w dłoni nie jest as pik, to
+kładziemy ją (obrazkiem do góry) na odpowiadające jej miejsce (np. gdyby była to dama tref,
+to odłożylibyśmy ją do rzędu trzeciego do czwartej kolumny), biorąc w dłoń leżącą tam kartę.
+Jeśli natrafimy ostatecznie na asa pik, to (o ile będzie taka potrzeba) odsłaniamy, nie
+zmieniając ich położeń w układzie, pozostałe nieodsłonięte (leżące koszulkami do góry)
+dotychczas karty. Jeżeli wszystkie karty leżeć będą we właściwej kolejności – wygraliśmy,
+jeśli nie – przegraliśmy.
+Napisz program, który generował będzie losowe rozłożenie kart, a następnie rozgrywał
+będzie partie tego pasjansa. Program działał będzie do pierwszego zwycięstwa. Partie
+przegrane nie interesują nas, chcemy jedynie wiedzieć, za którym razem wygraliśmy oraz
+zobaczyć wizualizację zwycięskiej partii. Przez wizualizację rozumiemy tutaj kolejne ruchy
+gracza począwszy od wejściowego układu, a skończywszy na asie pik „w dłoni” (łącznie z
+ewentualnym odsłanianiem kart nieodsłoniętych). Sposób tej wizualizacji pozostawiamy w
+gestii rozwiązującego. \cite{algorytmion}
+
+\section{Wejście}
+
+Program nie przyjmuje danych wejściowych.
+
+\section{Wyjście}
+
+Na wyjściu program podaje liczbę partii rozegranych aż do uzyskania partii zwycięskiej, oraz przebieg ostatniej partii.
+
+Przykładowe wyjście:
+
+\setlength{\columnsep}{1.2cm}
+\setlength{\columnseprule}{1pt}
+\def\columnseprulecolor{\color{black}}
+\begin{multicols}{2}
+\begin{verbatim}
+liczba partii: 6
+XXX     XXX     XXX     XXX
+XXX     XXX     XXX     XXX
+XXX     XXX     XXX     XXX
+XXX     XXX     XXX     XXX
+XXX     XXX     XXX     XXX
+XXX     XXX     XXX
+hand: Q♥
+
+XXX     XXX     XXX     XXX
+XXX     XXX     XXX     XXX
+XXX     XXX     XXX     XXX
+Q♥      XXX     XXX     XXX
+XXX     XXX     XXX     XXX
+XXX     XXX     XXX
+hand: 9♣
+
+XXX     XXX     9♣      XXX
+XXX     XXX     XXX     XXX
+XXX     XXX     XXX     XXX
+Q♥      XXX     XXX     XXX
+XXX     XXX     XXX     XXX
+XXX     XXX     XXX
+hand: 10♥
+
+XXX     XXX     9♣      XXX
+10♥     XXX     XXX     XXX
+XXX     XXX     XXX     XXX
+Q♥      XXX     XXX     XXX
+XXX     XXX     XXX     XXX
+XXX     XXX     XXX
+hand: A♣
+
+XXX     XXX     9♣      XXX
+10♥     XXX     XXX     XXX
+XXX     XXX     XXX     XXX
+Q♥      XXX     XXX     XXX
+XXX     XXX     XXX     XXX
+XXX     XXX     A♣
+hand: A♦
+
+XXX     XXX     9♣      XXX
+10♥     XXX     XXX     XXX
+XXX     XXX     XXX     XXX
+Q♥      XXX     XXX     XXX
+XXX     XXX     XXX     XXX
+XXX     A♦      A♣
+hand: Q♣
+
+XXX     XXX     9♣      XXX
+10♥     XXX     XXX     XXX
+XXX     XXX     XXX     XXX
+Q♥      XXX     Q♣      XXX
+XXX     XXX     XXX     XXX
+XXX     A♦      A♣
+hand: J♠
+
+XXX     XXX     9♣      XXX
+10♥     XXX     XXX     XXX
+XXX     XXX     XXX     J♠
+Q♥      XXX     Q♣      XXX
+XXX     XXX     XXX     XXX
+XXX     A♦      A♣
+hand: J♣
+
+XXX     XXX     9♣      XXX
+10♥     XXX     XXX     XXX
+XXX     XXX     J♣      J♠
+Q♥      XXX     Q♣      XXX
+XXX     XXX     XXX     XXX
+XXX     A♦      A♣
+hand: K♣
+
+XXX     XXX     9♣      XXX
+10♥     XXX     XXX     XXX
+XXX     XXX     J♣      J♠
+Q♥      XXX     Q♣      XXX
+XXX     XXX     K♣      XXX
+XXX     A♦      A♣
+hand: 9♦
+
+XXX     9♦      9♣      XXX
+10♥     XXX     XXX     XXX
+XXX     XXX     J♣      J♠
+Q♥      XXX     Q♣      XXX
+XXX     XXX     K♣      XXX
+XXX     A♦      A♣
+hand: 9♥
+
+9♥      9♦      9♣      XXX
+10♥     XXX     XXX     XXX
+XXX     XXX     J♣      J♠
+Q♥      XXX     Q♣      XXX
+XXX     XXX     K♣      XXX
+XXX     A♦      A♣
+hand: J♦
+
+9♥      9♦      9♣      XXX
+10♥     XXX     XXX     XXX
+XXX     J♦      J♣      J♠
+Q♥      XXX     Q♣      XXX
+XXX     XXX     K♣      XXX
+XXX     A♦      A♣
+hand: 10♣
+
+9♥      9♦      9♣      XXX
+10♥     XXX     10♣     XXX
+XXX     J♦      J♣      J♠
+Q♥      XXX     Q♣      XXX
+XXX     XXX     K♣      XXX
+XXX     A♦      A♣
+hand: K♥
+
+9♥      9♦      9♣      XXX
+10♥     XXX     10♣     XXX
+XXX     J♦      J♣      J♠
+Q♥      XXX     Q♣      XXX
+K♥      XXX     K♣      XXX
+XXX     A♦      A♣
+hand: 10♦
+
+9♥      9♦      9♣      XXX
+10♥     10♦     10♣     XXX
+XXX     J♦      J♣      J♠
+Q♥      XXX     Q♣      XXX
+K♥      XXX     K♣      XXX
+XXX     A♦      A♣
+hand: Q♦
+
+9♥      9♦      9♣      XXX
+10♥     10♦     10♣     XXX
+XXX     J♦      J♣      J♠
+Q♥      Q♦      Q♣      XXX
+K♥      XXX     K♣      XXX
+XXX     A♦      A♣
+hand: 10♠
+
+9♥      9♦      9♣      XXX
+10♥     10♦     10♣     10♠
+XXX     J♦      J♣      J♠
+Q♥      Q♦      Q♣      XXX
+K♥      XXX     K♣      XXX
+XXX     A♦      A♣
+hand: A♥
+
+9♥      9♦      9♣      XXX
+10♥     10♦     10♣     10♠
+XXX     J♦      J♣      J♠
+Q♥      Q♦      Q♣      XXX
+K♥      XXX     K♣      XXX
+A♥      A♦      A♣
+hand: K♠
+
+9♥      9♦      9♣      XXX
+10♥     10♦     10♣     10♠
+XXX     J♦      J♣      J♠
+Q♥      Q♦      Q♣      XXX
+K♥      XXX     K♣      K♠
+A♥      A♦      A♣
+hand: J♥
+
+9♥      9♦      9♣      XXX
+10♥     10♦     10♣     10♠
+J♥      J♦      J♣      J♠
+Q♥      Q♦      Q♣      XXX
+K♥      XXX     K♣      K♠
+A♥      A♦      A♣
+hand: K♦
+
+9♥      9♦      9♣      XXX
+10♥     10♦     10♣     10♠
+J♥      J♦      J♣      J♠
+Q♥      Q♦      Q♣      XXX
+K♥      K♦      K♣      K♠
+A♥      A♦      A♣
+hand: Q♠
+
+9♥      9♦      9♣      XXX
+10♥     10♦     10♣     10♠
+J♥      J♦      J♣      J♠
+Q♥      Q♦      Q♣      Q♠
+K♥      K♦      K♣      K♠
+A♥      A♦      A♣
+hand: 9♠
+
+9♥      9♦      9♣      9♠
+10♥     10♦     10♣     10♠
+J♥      J♦      J♣      J♠
+Q♥      Q♦      Q♣      Q♠
+K♥      K♦      K♣      K♠
+A♥      A♦      A♣
+hand: A♠
+\end{verbatim}
+\end{multicols}
+
+Pierwsza linia wyjścia informuje o liczbie rozegranych partii. Następnie wyświetlane są kolejne układy planszy, rozpoczynając od ułożenia startowego.
+
+Każdy widok planszy składa się z układu czterech rzędów, zawierających po sześć kart. Karty zasłonięte są widoczne jako \texttt{XXX}. Odsłonięte karty reprezentowane są przez ich wartość (\texttt{9}, \texttt{10}, \texttt{J}, \texttt{Q}, \texttt{K} lub \texttt{A}) oraz kolor (\texttt{$\heartsuit$}, \texttt{$\diamondsuit$}, \texttt{$\clubsuit$} lub \texttt{$\spadesuit$}). Pod rzędami kart, po słowie \texttt{hand:}, widoczna jest karta trzymana aktualnie na ręce.
+
+Kolejne plansze reprezentują ułożenia kart po podmianie karty z ręki na odpowiadającą jej miejcu kartę z planszy.
+
+\section{Algorytm rozwiązania}
+\subsection{Opis}
+\subsection{Schemat blokowy}
+\newpage
+\subsection{Metody i klasy w programie}
+
+\subsubsection*{enum Suit}
+
+\setlength{\columnsep}{10pt}
+\begin{wrapfigure}{r}{5cm}
+    \centering
+\begin{tikzpicture}
+    \begin{enum}[text width=7cm]{Suit}{0,0}
+        \attribute{HEART(value: 0)}
+        \attribute{DIAMOND(value: 1)}
+        \attribute{CLUB(value: 2)}
+        \attribute{SPADE(value: 3)}
+        \attribute{- int value}
+
+        \attribute{+ int getValue()}
+    \end{enum}
+
+    \begin{enum}[text width=7cm]{CardValue}{0,-4}
+        \attribute{N9(value: 0)}
+        \attribute{N10(value: 1)}
+        \attribute{J(value: 2)}
+        \attribute{Q(value: 3)}
+        \attribute{K(value: 4)}
+        \attribute{A(value: 5)}
+        \attribute{- int value}
+
+        \attribute{+ int getValue()}
+    \end{enum}
+\end{tikzpicture}
+\end{wrapfigure}
+
+\texttt{Suit} reprezentuje kolor karty. Każdemu z jego wariantów przypisana jest wartość liczbowa, która odpowiada indeksowi rzędu na planszy (licząc od 0). Wartość przechowywana jest w atrybucie \texttt{value}. Enumerator ma metodę \texttt{int getValue()}, która zwraca wartość atrybutu \texttt{value}.
+
+\subsubsection*{enum CardValue}
+\texttt{CardValue} reprezentuje wartość karty. Każdemu z jego wariantów przypisana jest wartość liczbowa, która odpowiada indeksowi karty w rzędzie na planszy (licząc od 0). Wartość przechowywana jest w atrybucie \texttt{value}. Enumerator ma metodę \texttt{int getValue()}, która zwraca wartość atrybutu \texttt{value}.
+
+\subsubsection*{class RandomEnumGenerator}
+
+Klasa \texttt{RandomEnumGenerator<T>} jest klasą generyczną dla typu, który jest enumeratorem. Umożliwia wybór losowego wariantu podanego enumeratora. Posiada atrybut \texttt{Random PRNG}, który przechowuje obiekt klasy \texttt{Random} z pakietu \texttt{java.util.Random}, oraz atrybut \texttt{T[] values}, który jest tablicą wariantów obsługiwanego enumeratora. W konstruktorze atrybutowi \texttt{T[] values} przypisywane są wartości wariantów enumeratora. Klasa posiada metodę \texttt{T getRandomElement()}, który zwraca losowy element tablicy \texttt{T[] values}.
+
+\begin{center}
+    \begin{tikzpicture}
+        \begin{class}[text width=7cm]{RandomEnumGenerator$<$T$>$}{0,0}
+            \attribute{- Random PRNG}
+            \attribute{- T[] values}
+            \operation{+ T getRandomElement()}
+        \end{class}
+    \end{tikzpicture}
+\end{center}
+
+\newpage
+
+\subsubsection*{class Card}
+
+\begin{wrapfigure}{r}{6cm}
+\begin{tikzpicture}
+    \begin{class}[]{Card implements Comparable$<$Card$>$}{0,0}
+        \attribute{- CardValue value}
+        \attribute{- Suit suit}
+        \attribute{- boolean isUp}
+        \operation{+ void flip()}
+        \operation{+ int suitIdx()}
+        \operation{+ int valueIdx()}
+        \operation{+ getFaceUp()}
+        \operation{+ String toString()}
+        \operation{+ String valueString()}
+        \operation{+ String suitString()}
+        \operation{+ int compareTo(Card other)}
+    \end{class}
+\end{tikzpicture}    
+\end{wrapfigure}
+
+\texttt{Card} to klasa reprezentująca pojedynczą kartę w grze. Jej atrybuty to:
+
+\texttt{CardValue value} - wartość karty.
+
+\texttt{Suit suit} - kolor karty.
+
+\texttt{boolean isUp} - wartość określająca, czy karta jest odwrócona górą.
+
+Klasa posiada metody:
+
+Konstruktor klasy\\\texttt{Card(CardValue value, Suit suit)} przypisuje podane w argumentach wartości odpowiednim atrybutom klasy. Dodatkowo, atrybutowi \texttt{isUp} przypisywana jest wartość domyślna \texttt{false}.
+
+\texttt{void flip()} zmienia wartość atrybutu \texttt{boolean isUp} na przeciwną, reprezentując odwrócenie karty na drugą stronę.
+
+\texttt{int suitIdx()} zwraca wartość numeryczną przypisaną do koloru karty, która jest jednocześnie indeksem rzędu na planszy.
+
+\texttt{int valueIdx()} zwraca wartość numeryczną przypisaną do wartości karty, która jest jednocześnie indeksem karty w rzędzie na planszy.
+
+\texttt{boolean getFaceUp()} zwraca wartość atrybutu \texttt{boolean isUp}.
+
+\texttt{String toString()} zwraca reprezentację karty w postaci zmiennej typu \texttt{String}.
+
+\texttt{String valueString()} zwraca reprezentację wartości karty w postaci zmiennej typu \texttt{String}.
+
+\texttt{String suitString()} zwraca reprezentację koloru karty w posraci zmiennej typu \texttt{String}.
+
+\texttt{int compareTo(Card other)} to metoda porównująca  kartę do innej karty w oparciu o ich kolory i wartości. Dla takich samych kolorów, porządek wartości to 9, 10, walet, królowa, król, as. W innym przypadku porządek oparty jest o kolor kart - w kolejności kier, karo, trefl, pik.
+
+\subsubsection*{class Deck}
+
+\begin{center}
+\begin{tikzpicture}
+    \begin{class}[text width=9cm]{Deck}{0, 0}
+        \attribute{- ArrayList$<$Card$>$ content}
+        \attribute{- RandomEnumGenerator$<$CardValue$>$ valueGenerator}
+        \attribute{- RandomEnumGenerator$<$Suit$>$ suitGenerator}
+        \operation{+ void shuffle()}
+        \operation{+ void sort()}
+        \operation{+ Card draw()}
+        \operation{+ boolean isEmpty()}
+        \operation{+ String toString()}
+    \end{class}
+\end{tikzpicture}
+\end{center}
+
+Klasa \texttt{Deck} reprezentuje talię kart.
+
+\texttt{ArrayList$<$Card$>$ content} zawiera listę kart w talii. 
+
+\texttt{RandomEnumGenerator$<$CardValue$>$ valueGenerator} to generator losowych wartości kart.
+
+\texttt{RandomEnumGenerator$<$Suit$>$ suitGenerator} to generator losowych kolorów kart.
+
+Klasa posiada następujące metody:
+
+Konstruktor \texttt{Deck()} przypisuje atrybutom \texttt{valueGenerator} oraz \texttt{suitGenerator} nowo utworzone obiekty. Ponadto wywołuje metodę \texttt{void shuffle()}, która inicjuje listę kart w talii.
+
+\texttt{void shuffle()} tworzy talię kart. Metoda tworzy kolejne karty w sposób losowy, a następnie sprawdza, czy takiej karty nie ma jeszcze w liście \texttt{ArrayList$<$Card$>$ content}. W takim przypadku karta jest dodawana do talii. Proces jest powtarzany, aż talia nie osiągnie rozmiaru 24 kart.
+
+\texttt{void sort()} sortuje listę przechowywaną w atrybucie \texttt{ArrayList$<$Card$>$ content}.
+
+\texttt{Card draw()} służy do dobierania kart z talii. Jeśli lista \texttt{ArrayList$<$Card$>$ content} jest pusta, metoda zwraca wyjątek. W innym przypadku zwracany jest ostatni element tej listy, który jest również z niej usuwany.
+
+\texttt{boolean isEmpty()} zwraca wartość \texttt{true}, jeśli lista \texttt{ArrayList$<$Card$>$ content} jest pusta.
+
+\texttt{String toString()} zwraca reprezentację talii w postaci zmiennej typu \texttt{String}.
+
+\subsubsection*{class Board}
+
+\begin{center}
+\begin{tikzpicture}
+    \begin{class}[text width=7cm]{Board}{0,0}
+        \attribute{- ArrayList$<$ArrayList$<$Card$>>$ content}
+        \attribute{- Card hand}
+        \operation{+ void replace()}
+        \operation{+ Card getHand()}
+        \operation{+ boolean isFaceUp()}
+        \operation{+ String toString()}
+    \end{class}
+\end{tikzpicture}    
+\end{center}
+
+Klasa \texttt{Board} reprezentuje planszę. Posiada następujące atrybuty:
+
+\texttt{ArrayList$<$ArrayList$<$Card$>>$ content} to dwuwymiarowa lista zawierająca układ planszy.
+
+\texttt{Card hand} przechowuje kartę, która aktualnie znajduje się w ręce gracza.
+
+Klasa posiada poniższe metody:
+
+Konstruktor \texttt{Board()} tworzy obiekt klasy \texttt{Deck}, a następnie pobierając z niego kolejne karty, tworzy dwuwymiarową listę (zewnętrzna lista o rozmiarze 4, wewnętrzne listy o rozmiarze 6). Następnie usuwany z listy jest ostatni element ostatniej listy wewnętrznej, który zostaje przypisany atrybutowi \texttt{Card hand}. Karta trzymana w ręce zostaje odwrócona.
+
+\texttt{void replace()} reprezentuje podmianę karty na ręce na odpowiadającą jej miejscu kartę z planszy. W pierwszej kolejności zmiennej \texttt{Card newHand} przypisywana jest karta pobrana z listy, z pozycji odpowiadającej karcie przechowywanej w atrybucie \texttt{Card hand}. Następnie, na tą samą pozycję, wstawiana jest karta obecnie trzymana na ręce. Na sam koniec wartość zmiennej \texttt{Card newHand} jest przypisywana atrybutowi \texttt{Card hand}, karta ta jest również odwracana.
+
+\texttt{Card getHand()} to metoda, która zwraca kartę obecnie trzymaną na ręce.
+
+\texttt{boolean isFaceUp()} zwraca wartość \texttt{true}, jeśli wszyskie karty w planszy są odwrócone górą na wierzch.
+
+\texttt{String toString()} zwraca reprezentację planszy w postaci zmiennej typu \texttt{String}. Zapisywane są cztery rzędy zawierające reprezentacje poszczególnych kart, pod którymi, po napisie \texttt{hand:}, widoczna jest karta obecnie trzymana na ręce.
+
+\subsubsection*{class Game}
+
+\begin{wrapfigure}{r}{5.8cm}
+\begin{tikzpicture}
+    \begin{class}[text width=5.5cm]{Game}{0,0}
+        \attribute{- Card STOP$\_$CARD}
+        \attribute{- Board board}
+        \attribute{- ArrayList$<$String$>$ visualization}
+        \attribute{- boolean isWon}
+        \operation{+ void run()}
+        \operation{+ boolean getResult()}
+        \operation{+ void checkResult()}
+        \operation{+ String toString()}
+    \end{class}
+\end{tikzpicture} 
+\end{wrapfigure}
+
+
+Klasa \texttt{Game} reprezentuje pojedynczą rozgrywkę pasjansa.
+
+Atrybut stały \texttt{Card STOP$\_$CARD} przechowuje kartę as pik, której dobranie na rękę oznacza koniec rozgrywki.
+
+\texttt{Board board} to atrybut przechowujący planszę.
+
+\texttt{ArrayString$<$String$>$\\visualization} przechowuje listę reprezentacji kolejnych układów kart na planszy.
+
+\texttt{boolean isWon} to wartość przechowująca wynik rozgrywki.
+
+Klasa posiada metody:
+
+\texttt{void run()} rozgrywa partię. Dopóki kartą na ręce nie jest as pik, karta z ręki jest podmieniania na odpowiadającą jej pozycji kartę z planszy. Przy każdej podmianie do \texttt{ArrayList$<$String$>$ visualization} dodawana jest reprezentacja planszy w postaci zmiennej typu \texttt{String}. Na koniec sprawdzany jest wynik rozgrywki za pomocą metody \texttt{void checkResult()}.
+
+\texttt{boolean getResult()} zwraca wartość atrybutu \texttt{boolean isWon()}.
+
+\texttt{void checkResult()} zmienia wartość atrybutut \texttt{boolean isWon}, jeśli wszystkie karty obecne na planszy są odkryte.
+
+\texttt{String toString()} zwraca reprezentację rozgrywki z postaci zmiennej typu \texttt{String}. Zapisywane są reprezentacje kolejnych plansz rozdzielone znakiem nowej linii.
+
+\subsubsection*{class App}
+
+Klasa \texttt{App} jest główną klasą programu, posiadającą jedynie metodę \texttt{void main()}. Metoda ta inicjuje \texttt{int counter} wartością 0. Następnie rozgrywane są poszczególne partie, po każdej zwiększana o 1 jest wartość zmiennej \texttt{counter}. Partie są rozgrywane aż do uzyskania partii zwycięskiej, po czym na wyjście wypisywana jest liczba rozegranych partii oraz wizualizacja ostatniej rozgrywki.
+
+\section{Testy programu}
+\section{Wnioski}
+
+\bibliography{refs}
+\bibliographystyle{plain}
+
+\end{document}

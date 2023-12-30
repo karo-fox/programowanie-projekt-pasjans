@@ -1,12 +1,16 @@
 import java.util.ArrayList;
 
 public class Game {
-    private Board board = new Board();
     private final Card STOP_CARD = new Card(CardValue.A, Suit.SPADE);
-    private ArrayList<String> visualization = new ArrayList<>();
-    private boolean isWon = false;
+    private Board board;
+    private ArrayList<String> visualization;
+    private boolean isWon;
 
-    public Game() {}
+    public Game() {
+        this.board = new Board();
+        this.visualization = new ArrayList<>();
+        this.isWon = false;
+    }
 
     public void run() {
         this.visualization.add(this.board.toString());
