@@ -78,7 +78,7 @@ gestii rozwiązującego.
 
 \section{Wejście}
 
-Program nie przyjmuje danych wejściowych.
+Program nie przyjmuje danych wejściowych. Implementuje utworzenie talii składającej się z 24 kart w sposób losowy.
 
 \section{Wyjście}
 
@@ -304,7 +304,7 @@ Główna pętla rozgrywki (metoda \texttt{void run()} w klasie \texttt{Game}) pr
 \subsection{Schemat blokowy}
 
 % \begin{center}
-\begin{tikzpicture}[node distance = 1.5cm, scale=0.5, every node/.style={scale=0.5}]
+\begin{tikzpicture}[node distance = 1.5cm, scale=0.47, every node/.style={scale=0.47}]
     ]
     \node (start) [startstop] {Start};
     \node (counter) [process, below of=start] {inicjuj \texttt{counter}};
@@ -316,8 +316,10 @@ Główna pętla rozgrywki (metoda \texttt{void run()} w klasie \texttt{Game}) pr
 
     \node (counter-plus) [process, right of=result, xshift=4cm] {zwiększ \texttt{counter} o 1};
     \node (new-game) [process, below of=counter-plus] {\texttt{game} = nowa rozgrywka};
-    \node (as-pik) [decision, below of=new-game, yshift=-0.5cm] {czy na ręce jest as pik?};
+    \node (game-err) [process, right of=new-game, xshift=4cm, text width=5cm] {wyjątek w przypadku nieprawidłowego zbudowania talii, lub dobierania z pustej talii};
+    \node (as-pik) [decision, below of=new-game, yshift=-1cm] {czy na ręce jest as pik?};
     \node (replace) [process, right of=as-pik, xshift=4cm] {zamień kartę z ręki z odpowiednią kartą na planszy};
+    \node (replace-err) [process, right of=replace, xshift=2cm] {wyjątek w przypadku, gdy zamieniony ma być as pik};
     \node (viz-start) [process, below of=replace, yshift=-1cm] {zapisz reprezentację obecnej planszy};
 
     \draw [arrow] (start) -- (counter);
@@ -330,8 +332,10 @@ Główna pętla rozgrywki (metoda \texttt{void run()} w klasie \texttt{Game}) pr
     \draw [arrow] (result) -- node [anchor=south] {nie} (counter-plus);
     \draw [arrow] (counter-plus) -- (new-game);
     \draw [arrow] (new-game) -- (as-pik);
+    \draw [arrow] (new-game) -- (game-err);
     \draw [arrow] (as-pik) -- node [anchor=south] {nie} (replace);
     \draw [arrow] (replace) -- (viz-start);
+    \draw [arrow] (replace) -- (replace-err);
     \draw [arrow] (viz-start) -| (as-pik);
 
     \draw [arrow] (as-pik) -| node [anchor=south west] {tak} (result);
@@ -389,7 +393,7 @@ Klasa \texttt{RandomEnumGenerator<T>} jest klasą generyczną dla typu, który j
     \end{tikzpicture}
 \end{center}
 
-\newpage
+% \newpage
 
 \subsubsection*{class Card}
 
@@ -433,9 +437,9 @@ Konstruktor klasy\\\texttt{Card(CardValue value, Suit suit)} przypisuje podane w
 
 \texttt{String toString()} zwraca reprezentację karty w postaci zmiennej typu \texttt{String}.
 
-\texttt{String valueString()} zwraca reprezentację wartości karty w postaci zmiennej typu \texttt{String}.
+\texttt{String valueString()} zwraca reprezentację wartości karty w postaci zmiennej typu \texttt{String}. Metoda rzuca wyjątek, jeśli wartość karty nie zostaje rozpoznana.
 
-\texttt{String suitString()} zwraca reprezentację koloru karty w posraci zmiennej typu \texttt{String}.
+\texttt{String suitString()} zwraca reprezentację koloru karty w posraci zmiennej typu \texttt{String}. Metoda rzuca wyjątek, jeśli kolor karty nie zostaje rozpoznany.
 
 \texttt{int compareTo(Card other)} to metoda porównująca  kartę do innej karty w oparciu o ich kolory i wartości. Dla takich samych kolorów, porządek wartości to 9, 10, walet, królowa, król, as. W innym przypadku porządek oparty jest o kolor kart - w kolejności kier, karo, trefl, pik.
 
@@ -472,7 +476,7 @@ Konstruktor \texttt{Deck()} przypisuje atrybutom \texttt{valueGenerator} oraz \t
 
 \texttt{void sort()} sortuje listę przechowywaną w atrybucie \texttt{ArrayList$<$Card$>$ content}.
 
-\texttt{Card draw()} służy do dobierania kart z talii. Jeśli lista \texttt{ArrayList$<$Card$>$ content} jest pusta, metoda zwraca wyjątek. W innym przypadku zwracany jest ostatni element tej listy, który jest również z niej usuwany.
+\texttt{Card draw()} służy do dobierania kart z talii. Jeśli lista \texttt{ArrayList$<$Card$>$ content} jest pusta, metoda zwraca wyjątek. W innym przypadku zwracany jest ostatni element tej listy, który jest również z niej usuwany. Metoda rzuca wyjątek, jeśli jest wywołana w sytuacji, gdy talia jest pusta.
 
 \texttt{boolean isEmpty()} zwraca wartość \texttt{true}, jeśli lista \texttt{ArrayList$<$Card$>$ content} jest pusta.
 
@@ -503,7 +507,7 @@ Klasa posiada poniższe metody:
 
 Konstruktor \texttt{Board()} tworzy obiekt klasy \texttt{Deck}, a następnie pobierając z niego kolejne karty, tworzy dwuwymiarową listę (zewnętrzna lista o rozmiarze 4, wewnętrzne listy o rozmiarze 6). Następnie usuwany z listy jest ostatni element ostatniej listy wewnętrznej, który zostaje przypisany atrybutowi \texttt{Card hand}. Karta trzymana w ręce zostaje odwrócona.
 
-\texttt{void replace()} reprezentuje podmianę karty na ręce na odpowiadającą jej miejscu kartę z planszy. W pierwszej kolejności zmiennej \texttt{Card newHand} przypisywana jest karta pobrana z listy, z pozycji odpowiadającej karcie przechowywanej w atrybucie \texttt{Card hand}. Następnie, na tą samą pozycję, wstawiana jest karta obecnie trzymana na ręce. Na sam koniec wartość zmiennej \texttt{Card newHand} jest przypisywana atrybutowi \texttt{Card hand}, karta ta jest również odwracana.
+\texttt{void replace()} reprezentuje podmianę karty na ręce na odpowiadającą jej miejscu kartę z planszy. W pierwszej kolejności zmiennej \texttt{Card newHand} przypisywana jest karta pobrana z listy, z pozycji odpowiadającej karcie przechowywanej w atrybucie \texttt{Card hand}. Następnie, na tą samą pozycję, wstawiana jest karta obecnie trzymana na ręce. Na sam koniec wartość zmiennej \texttt{Card newHand} jest przypisywana atrybutowi \texttt{Card hand}, karta ta jest również odwracana. Metoda rzuca wyjątek, jeśli kartą na ręce jest as pik.
 
 \texttt{Card getHand()} to metoda, która zwraca kartę obecnie trzymaną na ręce.
 
@@ -554,7 +558,24 @@ Klasa posiada metody:
 Klasa \texttt{App} jest główną klasą programu, posiadającą jedynie metodę \texttt{void main()}. Metoda ta inicjuje \texttt{int counter} wartością 0. Następnie rozgrywane są poszczególne partie, po każdej zwiększana o 1 jest wartość zmiennej \texttt{counter}. Partie są rozgrywane aż do uzyskania partii zwycięskiej, po czym na wyjście wypisywana jest liczba rozegranych partii oraz wizualizacja ostatniej rozgrywki.
 
 \section{Testy programu}
+
+W celu przetestowania programu sprawdzam wyniki dla 100 kolejnych przebiegów algorytmu. W kolejnych przebiegach liczba rozegranych partii wynosiła: 
+9, 2, 28, 5, 54, 26, 11, 52, 40, 5, 22, 30, 2, 51, 11, 8, 2, 9, 3, 4, 1, 20, 13, 29, 54, 75, 14, 29, 1, 31, 15, 15, 10, 11, 31, 26, 12, 1, 2, 1, 45, 22, 31, 51, 4, 3, 35, 19, 65, 11, 5, 50, 3, 30, 10, 38, 12, 1, 30, 36, 9, 96, 45, 38, 57, 11, 30, 27, 96, 35, 4, 18, 4, 9, 84, 32, 6, 64, 11, 10, 8, 13, 39, 15, 5, 60, 13, 22, 2, 36, 15, 81, 3, 48, 14, 9, 46, 19, 12, 16.
+Brak powtarzających się zestawów liczb potwierdza losowość utworzonych talii.
+
+W trakcie przebiegu programu walidowana jest zawartość ręki oraz zawartość talii, także nie dochodzi do rzucania wyjątków. Jednakże możliwe jest sprawdzenie tychże walidacji poprzez zasymulowanie utworzenia nieprawidłowej talii. 
+
+Przy zasymulowaniu pustej talii na ekran zostaje wypisany \break \texttt{java.lang.Exception: Cannot draw from the empty deck.}
+
+Przy usunięciu warunku zapewniającego zakończenie rozgrywki po dobraniu asa pik na rękę, na ekran zostaje wypisany wyjątek \texttt{java.lang.Exception: Cannot replace the ace of spades from hand.}
+
 \section{Wnioski}
+
+Program podaje duże rozbieżności w danych wyjściowych, co spowodowane jest losowym sposobem generowania talii. Metoda generująca talię jest najmniej optymalnym elementem programu - w pętli \texttt{while} tworzona jest nowa karta, następnie sprawdza się, czy karta o tej samej wartości i kolorze nie znajduje się już w talii, w którym to razie proces jest powtarzany.
+
+Reprezentacja przebiegu rozgrywki stosuje uniwersalną symbolikę dotyczącą kart w standardowych taliach, co sprawia, że jest ona czytelna dla użytkownika.
+
+W procesie tworzenia programowania zastosowano system kontroli wersji git. 
 
 \bibliography{refs}
 \bibliographystyle{plain}

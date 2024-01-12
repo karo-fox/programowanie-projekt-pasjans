@@ -11,12 +11,8 @@ public class Board {
             this.content.add(new ArrayList<>());
             int cardsCounter = 0;
             while (cardsCounter < 6) {
-                try {
-                    this.content.get(rowsCounter).add(deck.draw());
-                    cardsCounter++;
-                } catch (Exception e) {
-                    System.out.println(e);
-                }
+                this.content.get(rowsCounter).add(deck.draw());
+                cardsCounter++;
             }
             rowsCounter++;
         }
@@ -26,7 +22,7 @@ public class Board {
 
     public void replace() throws Exception {
         if (hand.compareTo(new Card(CardValue.A, Suit.SPADE)) == 0) {
-            throw new Exception("Cannot replace the ace of spades from hand");
+            throw new Exception("Cannot replace the ace of spades from hand.");
         }
         Card newHand = this.content.get(this.hand.suitIdx()).remove(this.hand.valueIdx());
         this.content.get(this.hand.suitIdx()).add(this.hand.valueIdx(), this.hand);

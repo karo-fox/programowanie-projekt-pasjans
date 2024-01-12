@@ -1,15 +1,15 @@
 # Fdb version 3
-["bibtex main"] 1704103695 "main.aux" "main.bbl" "main" 1704108723
+["bibtex main"] 1705095367 "main.aux" "main.bbl" "main" 1705095957
   "./plain.bst" 1704103725 21703 4715f8603d8032edc35dc7ffde68ee72 ""
-  "main.aux" 1704103729 1039 fee223b02ede3138c4076b98d984cdbd "pdflatex"
+  "main.aux" 1705095957 1063 3a6d35b2f4975c0b98e8be52231147d9 "pdflatex"
   "refs.bib" 1704103129 229 e71ea8c2993944c05f3c5401aa3e493a ""
   (generated)
   "main.blg"
   "main.bbl"
-["pdflatex"] 1704103728 "/home/karola/studia/sem3/prog3/programowanie-projekt-pasjans/docs/main.tex" "/home/karola/studia/sem3/prog3/programowanie-projekt-pasjans/docs/main.pdf" "main" 1704108723
+["pdflatex"] 1705095956 "/home/karola/studia/sem3/prog3/programowanie-projekt-pasjans/docs/main.tex" "/home/karola/studia/sem3/prog3/programowanie-projekt-pasjans/docs/main.pdf" "main" 1705095957
   "/etc/texmf/web2c/texmf.cnf" 1699646020 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/karola/studia/sem3/prog3/programowanie-projekt-pasjans/docs/main.aux" 1704103729 1039 fee223b02ede3138c4076b98d984cdbd ""
-  "/home/karola/studia/sem3/prog3/programowanie-projekt-pasjans/docs/main.tex" 1704108722 24028 bbe585a6a25a044ec70d35e7b8dc29c2 ""
+  "/home/karola/studia/sem3/prog3/programowanie-projekt-pasjans/docs/main.aux" 1705095957 1063 3a6d35b2f4975c0b98e8be52231147d9 ""
+  "/home/karola/studia/sem3/prog3/programowanie-projekt-pasjans/docs/main.tex" 1705095956 26558 c44db242eabb868a8ed1b35870ceb0b0 ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/pl/plrm.enc" 1136849721 1944 1845592c00bbe510359fd6887a83ff72 ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/pl/pltt.enc" 1136849721 1971 0a4e750f2a9cb8345529a19560d48a96 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
@@ -141,12 +141,12 @@
   "/usr/share/texmf/web2c/texmf.cnf" 1581979058 38841 ce3692aa899bb693b90b87eaa5d4d84e ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1703878119 4770781 1ed1abab22da9c3e2cc82e4db562318b ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1703878167 8259435 e7d0a33f119eb42ede94ee207eecdb83 ""
-  "main.aux" 1704103729 1039 fee223b02ede3138c4076b98d984cdbd "pdflatex"
-  "main.bbl" 1704103695 0 d41d8cd98f00b204e9800998ecf8427e "bibtex main"
-  "main.tex" 1704108722 24028 bbe585a6a25a044ec70d35e7b8dc29c2 ""
+  "main.aux" 1705095957 1063 3a6d35b2f4975c0b98e8be52231147d9 "pdflatex"
+  "main.bbl" 1705095367 246 12e7f87954cf3f1eb84558946b229f9f "bibtex main"
+  "main.tex" 1705095956 26558 c44db242eabb868a8ed1b35870ceb0b0 ""
   (generated)
-  "/home/karola/studia/sem3/prog3/programowanie-projekt-pasjans/docs/main.pdf"
-  "main.aux"
-  "main.pdf"
   "main.log"
   "/home/karola/studia/sem3/prog3/programowanie-projekt-pasjans/docs/main.log"
+  "main.aux"
+  "main.pdf"
+  "/home/karola/studia/sem3/prog3/programowanie-projekt-pasjans/docs/main.pdf"
