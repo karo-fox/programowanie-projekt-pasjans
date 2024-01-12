@@ -6,13 +6,13 @@ public class Game {
     private ArrayList<String> visualization;
     private boolean isWon;
 
-    public Game() {
+    public Game() throws Exception {
         this.board = new Board();
         this.visualization = new ArrayList<>();
         this.isWon = false;
     }
 
-    public void run() {
+    public void run() throws Exception {
         this.visualization.add(this.board.toString());
         while (this.board.getHand().compareTo(this.STOP_CARD) != 0) {
             this.board.replace();

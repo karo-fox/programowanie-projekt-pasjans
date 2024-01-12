@@ -14,6 +14,15 @@
 
 \usepackage{multicol}
 
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric,arrows,positioning,calc}
+
+\tikzstyle{startstop} = [rectangle, rounded corners, minimum width = 3cm, minimum height = 1cm, text centered, text width = 2.5cm, draw = black]
+\tikzstyle{io} = [trapezium, trapezium left angle = 70, trapezium right angle = 110, minimum width = 3cm, minimum height = 1cm, text centered, text width = 2.5cm, draw = black]
+\tikzstyle{process} = [rectangle, minimum width = 3cm, minimum height = 1cm, text centered, text width = 2.5cm, draw = black]
+\tikzstyle{decision} = [diamond, aspect = 3, minimum width = 3cm, minimum height = 1cm, text centered, text width = 3cm, draw = black]
+\tikzstyle{arrow} = [thick, ->, > = stealth]
+
 \tikzstyle{umlcd style enum}=[rectangle split, rectangle split parts=2, 
 every text node part/.style={text centered},
 draw, minimum height=2em, umlcolor, minimum width=2cm, text width=4cm,
@@ -64,7 +73,8 @@ przegrane nie interesują nas, chcemy jedynie wiedzieć, za którym razem wygral
 zobaczyć wizualizację zwycięskiej partii. Przez wizualizację rozumiemy tutaj kolejne ruchy
 gracza począwszy od wejściowego układu, a skończywszy na asie pik „w dłoni” (łącznie z
 ewentualnym odsłanianiem kart nieodsłoniętych). Sposób tej wizualizacji pozostawiamy w
-gestii rozwiązującego. \cite{algorytmion}
+gestii rozwiązującego. 
+\cite{algorytmion}
 
 \section{Wejście}
 
@@ -284,8 +294,50 @@ Kolejne plansze reprezentują ułożenia kart po podmianie karty z ręki na odpo
 
 \section{Algorytm rozwiązania}
 \subsection{Opis}
+
+Główny algorytm rozwiązania znajduje się w metodzie \texttt{int main()} klasy \texttt{App}. Inicjowana jest zmienna \texttt{int counter}, z wartością 0. Następnie tworzony jest obiekt klasy \texttt{Game}. W pętli \texttt{while} sprawdzane jest, czy rozegrana partia była zwycięska. Jeśli nie, wartość zmiennej \texttt{counter} zostaje zwiększona o 1, a następnie tworzony jest nowy obiekt klasy \texttt{Game}, na którym rozgrywana jest partia. Po zakończeniu pętli \texttt{while}, na wyjście przekazywany jest komunikat informujący o ilości rozegranych partii, oraz przebieg zwycięskiej rozgrywki.
+
+Każda z rozgrywek rozpoczyna się od inicjalizacji planszy (obiektu klasy \texttt{Board}). Inicjalizacja planszy polega na utworzeniu obiektu klasy \texttt{Deck}, który zawiera kolekcję 24 losowo ułożonych kart. W trakcie inicjalizacji planszy tworzona jest dwuwymiarowa lista reprezentująca ułożenie kart (kolejno pobieranych z talii) w poszczególnych rzędach. Ostatnia z kart jest dobierana na rękę.
+
+Główna pętla rozgrywki (metoda \texttt{void run()} w klasie \texttt{Game}) przebiega, dopóki kartą na ręce nie jest as pik. Znajdowana jest pozycja na planszy odpowiadająca karcie na ręce (dzięki wartościom numerycznym przypisanym do wartości oraz koloru karty). Karta na znalezionej pozycji dobierana jest do ręki, a na planszy zastępowana kartą, która poprzednio znajdowała się na ręce. W obiekcie zapisywana jest reprezentacja układu na planszy po zamianie kart.
+
 \subsection{Schemat blokowy}
-\newpage
+
+% \begin{center}
+\begin{tikzpicture}[node distance = 1.5cm, scale=0.5, every node/.style={scale=0.5}]
+    ]
+    \node (start) [startstop] {Start};
+    \node (counter) [process, below of=start] {inicjuj \texttt{counter}};
+    \node (game) [process, below of=counter] {inicjuj \texttt{game}};
+    \node (result) [decision, below of=game, yshift=-0.5cm] {Czy partia została wygrana?};
+    \node (out-counter) [io, left of=result, xshift=-5.25cm] {wypisz counter};
+    \node (out-viz) [io, below of=out-counter, text width=3cm] {wypisz\\ wygraną partię};
+    \node (stop) [startstop, below of=out-viz] {Stop};
+
+    \node (counter-plus) [process, right of=result, xshift=4cm] {zwiększ \texttt{counter} o 1};
+    \node (new-game) [process, below of=counter-plus] {\texttt{game} = nowa rozgrywka};
+    \node (as-pik) [decision, below of=new-game, yshift=-0.5cm] {czy na ręce jest as pik?};
+    \node (replace) [process, right of=as-pik, xshift=4cm] {zamień kartę z ręki z odpowiednią kartą na planszy};
+    \node (viz-start) [process, below of=replace, yshift=-1cm] {zapisz reprezentację obecnej planszy};
+
+    \draw [arrow] (start) -- (counter);
+    \draw [arrow] (counter) -- (game);
+    \draw [arrow] (game) -- (result);
+    \draw [arrow] (result) -- node [anchor=south] {tak} (out-counter);
+    \draw [arrow] (out-counter) -- (out-viz);
+    \draw [arrow] (out-viz) -- (stop);
+
+    \draw [arrow] (result) -- node [anchor=south] {nie} (counter-plus);
+    \draw [arrow] (counter-plus) -- (new-game);
+    \draw [arrow] (new-game) -- (as-pik);
+    \draw [arrow] (as-pik) -- node [anchor=south] {nie} (replace);
+    \draw [arrow] (replace) -- (viz-start);
+    \draw [arrow] (viz-start) -| (as-pik);
+
+    \draw [arrow] (as-pik) -| node [anchor=south west] {tak} (result);
+\end{tikzpicture}
+% \end{center}
+
 \subsection{Metody i klasy w programie}
 
 \subsubsection*{enum Suit}

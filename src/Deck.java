@@ -6,13 +6,13 @@ public class Deck {
     private RandomEnumGenerator<Suit> suitGenerator;
 
 
-    public Deck() {
+    public Deck() throws Exception {
         this.valueGenerator = new RandomEnumGenerator<>(CardValue.class);
         this.suitGenerator = new RandomEnumGenerator<>(Suit.class);
         this.shuffle();
     }
 
-    public void shuffle() {
+    public void shuffle() throws Exception {
         this.content = new ArrayList<>();
         while (this.content.size() != 24) {
             Card card = new Card(valueGenerator.getRandomElement(), suitGenerator.getRandomElement());

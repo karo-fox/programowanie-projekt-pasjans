@@ -4,7 +4,7 @@ public class Board {
     private ArrayList<ArrayList<Card>> content = new ArrayList<>();
     private Card hand;
 
-    public Board() {
+    public Board() throws Exception {
         Deck deck = new Deck();
         int rowsCounter = 0;
         while (rowsCounter < 4) {
@@ -24,7 +24,10 @@ public class Board {
         this.hand.flip();
     }
 
-    public void replace() {
+    public void replace() throws Exception {
+        if (hand.compareTo(new Card(CardValue.A, Suit.SPADE)) == 0) {
+            throw new Exception("Cannot replace the ace of spades from hand");
+        }
         Card newHand = this.content.get(this.hand.suitIdx()).remove(this.hand.valueIdx());
         this.content.get(this.hand.suitIdx()).add(this.hand.valueIdx(), this.hand);
         this.hand = newHand;

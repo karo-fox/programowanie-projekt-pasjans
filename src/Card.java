@@ -26,13 +26,17 @@ public class Card implements Comparable<Card> {
     }
 
     public String toString() {
-        if (this.isUp) {
-            return this.valueString() + this.suitString();
+        try {
+            if (this.isUp) {
+                return this.valueString() + this.suitString();
+            }
+        } catch (Exception e) {
+            return "XXX";
         }
         return "XXX";
     }
 
-    private String valueString() {
+    private String valueString() throws Exception {
         switch (value) {
             case A:
                 return "A";
@@ -47,11 +51,11 @@ public class Card implements Comparable<Card> {
             case N9:
                 return "9";
             default:
-                throw new IllegalArgumentException("Unrecognized card value.");
+                throw new Exception("Unrecognized card value.");
         }
     }
 
-    private String suitString() {
+    private String suitString() throws Exception {
         switch (suit) {
             case HEART:
                 return "♥";
@@ -62,7 +66,7 @@ public class Card implements Comparable<Card> {
             case SPADE:
                 return "♠";
             default:
-                throw new IllegalArgumentException("Unrecognized card suit.");
+                throw new Exception("Unrecognized card suit.");
         }
     }
 
